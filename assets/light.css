@@ -1,0 +1,45 @@
+/* Zyvex India: light theme (white background, black text, green/teal accents).
+   Loaded after each page's own styles so these win. */
+:root{
+--black:#ffffff; --ink:#0d1211; --muted:#4b5552; --faint:#78817d;
+--teal:#03594a; --teal2:#067a64;
+--line:rgba(13,18,17,.12); --grid-line:rgba(13,18,17,.05);
+--glow:#0a9a7f; --glow-deep:#067a64;
+}
+html{color-scheme:light}
+body{background:#fff;color:var(--ink)}
+::selection{background:rgba(10,154,127,.18)}
+.site-header{background:rgba(255,255,255,.9)}
+.section-b,.section-b + .section-cta,.founder-video{background:#f4f8f7}
+/* filled buttons keep white text on green */
+.header-cta,.header-cta:hover,.btn-solid,.btn-solid:hover,.submit,.submit:hover,.eyebrow,
+.tier.featured .tier-cta,.tier.featured .tier-cta:hover,.case-btn:hover,.btn:hover.btn-solid{color:#fff}
+.btn:not(.btn-solid):hover{border-color:var(--teal2);color:var(--teal2)}
+/* cards */
+.wcard,.case,.quote,.tier{background:#fff}
+.wcard,.case{box-shadow:0 1px 2px rgba(13,18,17,.04),0 14px 34px -22px rgba(6,122,100,.45)}
+.wcard:hover,.case:hover{box-shadow:0 0 0 1px rgba(6,122,100,.16),0 20px 48px -18px rgba(6,122,100,.38)}
+.wcard-media,.case-media{background:#eef3f1}
+.metric{background:#fbfdfc}
+.quote .quote-body{color:#1d2422}
+/* forms */
+.field input,.field select,.field textarea{background-color:#fff;color:var(--ink)}
+.field input::placeholder,.field textarea::placeholder{color:#9aa39f}
+.field select option{background:#fff;color:var(--ink)}
+.contact-modal{background:rgba(8,24,20,.42)}
+.contact-modal > .wrap{background:#fff;border-color:rgba(6,122,100,.38);
+box-shadow:0 0 0 1px rgba(6,122,100,.05) inset,0 30px 80px rgba(8,40,32,.22),0 0 60px rgba(10,154,127,.10)}
+.modal-close{background:#f4f8f7}
+/* white-only artwork becomes dark on white */
+.logo-marquee img,.hero-partner{filter:invert(1)}
+/* soft teal chips stay readable */
+.tool-tags span,.flow-tags span{background:rgba(10,154,127,.08)!important;border-color:rgba(6,122,100,.28)!important;color:var(--teal2)!important}
+.crosslink a{color:var(--teal2);border-bottom-color:rgba(6,122,100,.35)}
+.nav-link.active::after{box-shadow:none}
+/* stronger case card borders */
+.case,.wcard{border:2px solid #0a9a7f!important;border-radius:6px;box-shadow:0 0 0 4px rgba(10,154,127,.08),0 16px 36px -22px rgba(6,122,100,.5)!important}
+.case::after,.wcard::after{display:none}
+.case,.wcard{overflow:hidden}
+.case:hover,.wcard:hover{border-color:#03594a!important;box-shadow:0 0 0 5px rgba(10,154,127,.14),0 22px 48px -20px rgba(6,122,100,.5)!important}
+.case .metric{border-color:rgba(6,122,100,.28)}
+.case .case-actions{border-top-color:rgba(6,122,100,.22)}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://in.zyvextech.co/sitemap.xml
