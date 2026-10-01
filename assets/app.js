@@ -3,15 +3,12 @@
    Shared behaviour: lead form, webhook delivery, Meta Pixel.
 
    ── CONFIG ──────────────────────────────────────────────────
-   Fill these two in and the page is fully wired. Until
-   LEAD_WEBHOOK is set, the form falls back to opening an email
-   so that no enquiry is ever silently lost.
+   PIXEL_ID is NOT stored here. It is fetched at runtime from
+   /api/config so it only needs to be set in Vercel's env vars
+   (META_PIXEL_ID) and never hard-coded in source files.
    ───────────────────────────────────────────────────────────── */
 var CONFIG = {
   LEAD_WEBHOOK: '/api/submit-lead',
-
-  /* Meta Pixel ID for the India account. Leave "" to disable tracking. */
-  PIXEL_ID: "1419130162978767",
 
   /* Fallback inbox used only while LEAD_WEBHOOK is empty. */
   FALLBACK_EMAIL: "techzyvex@gmail.com",
@@ -52,8 +49,13 @@ function leadValue(form, tier) {
 }
 
 /* ── Meta Pixel ───────────────────────────────────────────── */
-function initPixel() {
-  if (!CONFIG.PIXEL_ID) return;
+
+/** pixelId is fetched from /api/config at runtime — never hard-coded. */
+var _pixelId = '';
+
+function initPixel(pixelId) {
+  if (!pixelId) return;
+  _pixelId = pixelId;
   /* eslint-disable */
   !function (f, b, e, v, n, t, s) {
     if (f.fbq) return; n = f.fbq = function () {
@@ -65,12 +67,12 @@ function initPixel() {
   }
     (window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
   /* eslint-enable */
-  window.fbq('init', CONFIG.PIXEL_ID);
+  window.fbq('init', _pixelId);
   window.fbq('track', 'PageView');
 }
 
 function trackLead(payload) {
-  if (!CONFIG.PIXEL_ID || !window.fbq) return;
+  if (!_pixelId || !window.fbq) return;
   window.fbq('track', 'Lead', {
     value: payload.lead_value,
     currency: 'INR',
@@ -251,7 +253,12 @@ function initReveal() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  initPixel();
+  // Fetch Pixel ID from server env var — never stored in source code.
+  fetch('/api/config')
+    .then(function (r) { return r.ok ? r.json() : {}; })
+    .then(function (cfg) { initPixel(cfg.pixelId || ''); })
+    .catch(function () { /* silently skip tracking if endpoint unreachable */ });
+
   initForm();
   initFounderVideo();
   initReveal();

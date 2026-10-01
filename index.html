@@ -1048,8 +1048,6 @@ so that no enquiry is ever silently lost.
 var CONFIG = {
 /* Vercel serverless endpoint — wired to Meta CAPI + Zoho CRM. */
 LEAD_WEBHOOK: '/api/submit-lead',
-/* Meta Pixel ID for the India account. Leave "" to disable tracking. */
-PIXEL_ID: "1419130162978767",
 /* Fallback inbox used only while LEAD_WEBHOOK is empty. */
 FALLBACK_EMAIL: "techzyvex@gmail.com",
 /* Founder video. Put an mp4 in /assets and point at it, e.g.
@@ -1084,8 +1082,10 @@ var key = form + ":" + tier;
 return Object.prototype.hasOwnProperty.call(LEAD_VALUES, key) ? LEAD_VALUES[key] : 0;
 }
 /* ── Meta Pixel ───────────────────────────────────────────── */
-function initPixel(){
-if(!CONFIG.PIXEL_ID) return;
+var _pixelId = '';
+function initPixel(pixelId){
+if(!pixelId) return;
+_pixelId = pixelId;
 /* eslint-disable */
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -1093,11 +1093,11 @@ n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
 (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 /* eslint-enable */
-window.fbq('init', CONFIG.PIXEL_ID);
+window.fbq('init', _pixelId);
 window.fbq('track', 'PageView');
 }
 function trackLead(payload){
-if(!CONFIG.PIXEL_ID || !window.fbq) return;
+if(!_pixelId || !window.fbq) return;
 window.fbq('track', 'Lead', {
 value: payload.lead_value,
 currency: 'INR',
@@ -1273,7 +1273,11 @@ if(en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); 
 Array.prototype.forEach.call(els, function(el){ obs.observe(el); });
 }
 document.addEventListener('DOMContentLoaded', function(){
-initPixel();
+// Fetch Pixel ID from Vercel env var — never stored in source code.
+fetch('/api/config')
+.then(function(r){ return r.ok ? r.json() : {}; })
+.then(function(cfg){ initPixel(cfg.pixelId || ''); })
+.catch(function(){});
 initForm();
 initFounderVideo();
 initReveal();
