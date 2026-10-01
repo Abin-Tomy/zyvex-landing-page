@@ -123,6 +123,12 @@ async function getZohoAccessToken() {
   return json.access_token;
 }
 
+/** Maps the frontend `service` value to the Zoho Lead_Type picklist label. */
+const LEAD_TYPE_MAP = {
+  full_stack_marketing: 'Full Stack Marketing',
+  shopify:             'Shopify Builds',
+};
+
 /**
  * Create a Lead record in Zoho CRM (Leads module).
  * Required env vars: ZOHO_REFRESH_TOKEN, ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET.
@@ -165,6 +171,7 @@ async function createZohoLead(payload) {
     Company:     business  || undefined,
     Website:     website   || undefined,
     Lead_Source: attribution.utm_source || 'Meta Ads',
+    Lead_Type:   LEAD_TYPE_MAP[service] || undefined,
     Description: description,
   };
 
