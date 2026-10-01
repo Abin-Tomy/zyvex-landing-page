@@ -1194,11 +1194,13 @@ var tier = form.elements.budget.value;
 var tierLabel = form.elements.budget.selectedOptions[0].textContent.trim();
 var value = leadValue(kind, tier);
 var sp = new URLSearchParams(window.location.search);
+var fbpMatch = document.cookie.match(/(?:^|;\s*)_fbp=([^;]+)/);
 var attribution = {
 utm_source:   sp.get('utm_source')   || '',
 utm_medium:   sp.get('utm_medium')   || '',
 utm_campaign: sp.get('utm_campaign') || '',
-fbclid:       sp.get('fbclid')       || ''
+fbclid:       sp.get('fbclid')       || '',
+fbp:          fbpMatch ? decodeURIComponent(fbpMatch[1]) : ''
 };
 var payload = {
 form: kind,
@@ -1221,8 +1223,8 @@ submitted_at: new Date().toISOString()
 };
 btn.disabled = true;
 btn.textContent = 'Sending';
-deliver(payload).then(function(sent){
 trackLead(payload);
+deliver(payload).then(function(sent){
 if(sent){
 form.style.display = 'none';
 if(note) note.style.display = 'none';

@@ -57,6 +57,7 @@ async function sendMetaCapi(payload, req) {
   if (clientIp)  userData.client_ip_address  = clientIp;
   if (userAgent) userData.client_user_agent  = userAgent;
   if (fbc)       userData.fbc                = fbc;
+  if (attribution.fbp) userData.fbp          = attribution.fbp;
 
   const eventPayload = {
     data: [
