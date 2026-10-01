@@ -134,7 +134,7 @@ const LEAD_TYPE_MAP = {
  * Create a Lead record in Zoho CRM (Leads module).
  * Required env vars: ZOHO_REFRESH_TOKEN, ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET.
  */
-async function createZohoLead(payload) {
+async function createZohoLead(payload, req) {
   if (
     !process.env.ZOHO_REFRESH_TOKEN ||
     !process.env.ZOHO_CLIENT_ID     ||
@@ -146,7 +146,8 @@ async function createZohoLead(payload) {
 
   const {
     name, email, phone, business, website,
-    budget_label, message, service,
+    budget, budget_label, message, service,
+    timeline,
     attribution = {},
   } = payload;
 
@@ -157,12 +158,32 @@ async function createZohoLead(payload) {
   const lastName  = parts.length > 1 ? parts.slice(1).join(' ') : (parts[0] || 'Unknown');
   const firstName = parts.length > 1 ? parts[0] : '';
 
-  const description = [
-    'Service: '  + (service          || ''),
-    'Budget: '   + (budget_label     || ''),
-    'Campaign: ' + (attribution.utm_campaign || ''),
-    'Message: '  + (message          || ''),
-  ].join('\n');
+  // Extract client IP, user agent, and fbc using existing logic
+  const clientIp = (
+    payload.client_ip ||
+    (req && req.headers && (req.headers['x-forwarded-for'] || req.headers['x-real-ip']) || '')
+  ).split(',')[0].trim();
+
+  const userAgent = payload.user_agent || (req && req.headers && req.headers['user-agent']) || '';
+
+  const fbclid = attribution.fbclid || '';
+  const fbc    = attribution.fbc || payload.fbc || (fbclid ? `fb.1.${Date.now()}.${fbclid}` : undefined);
+
+  // Description contains user message and undedicated attribution fields (no duplicate dedicated fields)
+  const descParts = [];
+  if (message && String(message).trim()) {
+    descParts.push('Message: ' + String(message).trim());
+  }
+  if (attribution.utm_campaign && String(attribution.utm_campaign).trim()) {
+    descParts.push('UTM Campaign: ' + String(attribution.utm_campaign).trim());
+  }
+  if (attribution.utm_medium && String(attribution.utm_medium).trim()) {
+    descParts.push('UTM Medium: ' + String(attribution.utm_medium).trim());
+  }
+  if (attribution.utm_source && String(attribution.utm_source).trim()) {
+    descParts.push('UTM Source: ' + String(attribution.utm_source).trim());
+  }
+  const description = descParts.length > 0 ? descParts.join('\n') : undefined;
 
   const record = {
     Last_Name:   lastName,
@@ -171,8 +192,15 @@ async function createZohoLead(payload) {
     Phone:       normalisePhone(phone) || phone || undefined,
     Company:     business  || undefined,
     Website:     website   || undefined,
-    Lead_Source: attribution.utm_source || 'Meta Ads',
+    Lead_Source: 'Meta Ads',
     Lead_Type:   LEAD_TYPE_MAP[service] || undefined,
+    Budget:      budget || budget_label || undefined,
+    Meta_FBP:    attribution.fbp || undefined,
+    Meta_FBCLID: fbclid || undefined,
+    Meta_FBC:    fbc || undefined,
+    Client_IP:   clientIp || undefined,
+    User_Agent:  userAgent || undefined,
+    Timeline:    timeline || undefined,
     Description: description,
   };
 
@@ -237,7 +265,7 @@ module.exports = async function handler(req, res) {
   // Fire both integrations concurrently; a failure in one never blocks the other
   const results = await Promise.allSettled([
     sendMetaCapi(enrichedPayload, req),
-    createZohoLead(enrichedPayload),
+    createZohoLead(enrichedPayload, req),
   ]);
 
   results.forEach(function(r, i) {
