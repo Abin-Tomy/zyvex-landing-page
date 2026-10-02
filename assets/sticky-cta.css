@@ -1,23 +1,34 @@
 /* Contact button pinned to the bottom of every page (replaces the header button).
-   Glass style. Phones: compact bar centred just above the browser toolbar.
-   Larger screens: floating pill, bottom right. */
+   Animated light glass with dark green text. Phones: compact bar centred just
+   above the browser toolbar. Larger screens: floating pill, bottom right. */
 .sticky-cta{position:fixed;z-index:900;display:flex;align-items:center;justify-content:center;gap:10px;
-color:#fff;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
-background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0) 60%),rgba(3,89,74,.74);
--webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%);
-border:1px solid rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.35);
-text-shadow:0 1px 2px rgba(0,0,0,.18);transition:background-color .18s,transform .18s}
-.sticky-cta:hover,.sticky-cta:focus-visible{background-color:rgba(3,89,74,.86);color:#fff;outline:none}
+overflow:hidden;isolation:isolate;color:#03594a;font-size:12.5px;font-weight:800;letter-spacing:.14em;
+text-transform:uppercase;text-decoration:none;
+background:linear-gradient(120deg,rgba(206,238,229,.72),rgba(255,255,255,.5) 45%,rgba(186,229,217,.72));
+background-size:220% 220%;
+-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);
+border:1px solid rgba(3,89,74,.24);
+box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(3,89,74,.10);
+animation:cta-tint 9s ease-in-out infinite;transition:color .18s,border-color .18s,transform .18s}
+/* light sweeping across the glass */
+.sticky-cta::after{content:"";position:absolute;inset:-1px;z-index:-1;pointer-events:none;border-radius:inherit;
+background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.85) 50%,transparent 70%);
+transform:translateX(-130%);animation:cta-sheen 5s ease-in-out infinite}
+.sticky-cta:hover,.sticky-cta:focus-visible{color:#023f35;border-color:rgba(3,89,74,.45);outline:none}
 .sticky-cta svg{width:16px;height:16px;flex:none}
-@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.sticky-cta{background-color:rgba(3,89,74,.92)}}
+@keyframes cta-tint{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes cta-sheen{0%,55%{transform:translateX(-130%)}85%,100%{transform:translateX(130%)}}
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+.sticky-cta{background-color:#e3f4ef}}
 @media(min-width:769px){
 .sticky-cta{right:28px;bottom:28px;padding:15px 26px;border-radius:999px}
 .sticky-cta:hover{transform:translateY(-2px)}
 }
 @media(max-width:768px){
 .sticky-cta{left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));
-width:min(240px,62vw);height:48px;border-radius:14px;font-size:12.5px}
+width:min(240px,62vw);height:48px;border-radius:14px}
 body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 }
+@media(prefers-reduced-motion:reduce){.sticky-cta,.sticky-cta::after{animation:none}}
 body.modal-open .sticky-cta{opacity:0;pointer-events:none}
 @media print{.sticky-cta{display:none}}
