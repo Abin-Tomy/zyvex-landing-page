@@ -41,6 +41,10 @@ async function sendMetaCapi(payload, req) {
 
   const { service, event_id, attribution = {} } = payload;
 
+  const eventName = service === 'shopify'
+    ? 'ShopifyLead'
+    : 'FullStackLead';
+
   const clientIp = (
     req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || ''
   ).split(',')[0].trim();
@@ -62,7 +66,7 @@ async function sendMetaCapi(payload, req) {
   const eventPayload = {
     data: [
       {
-        event_name:       'Lead',
+        event_name:       eventName,
         event_time:       Math.floor(Date.now() / 1000),
         event_id:         event_id,
         action_source:    'website',

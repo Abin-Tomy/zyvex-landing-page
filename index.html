@@ -1098,7 +1098,10 @@ window.fbq('track', 'PageView');
 }
 function trackLead(payload){
 if(!_pixelId || !window.fbq) return;
-window.fbq('track', 'Lead', {
+var eventName = payload.service === 'shopify'
+  ? 'ShopifyLead'
+  : 'FullStackLead';
+window.fbq('track', eventName, {
 value: payload.lead_value,
 currency: 'INR',
 content_name: payload.service,
