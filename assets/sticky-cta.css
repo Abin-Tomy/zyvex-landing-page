@@ -2,7 +2,7 @@
    Animated light glass with dark green text. Phones: compact bar centred just
    above the browser toolbar. Larger screens: floating pill, bottom right. */
 .sticky-cta{position:fixed;z-index:900;display:flex;align-items:center;justify-content:center;gap:10px;
-overflow:hidden;isolation:isolate;color:#03594a;font-size:12.5px;font-weight:800;letter-spacing:.14em;
+overflow:hidden;isolation:isolate;color:#03594a;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;font-weight:800;letter-spacing:.14em;
 text-transform:uppercase;text-decoration:none;
 background:linear-gradient(120deg,rgba(206,238,229,.72),rgba(255,255,255,.5) 45%,rgba(186,229,217,.72));
 background-size:220% 220%;
