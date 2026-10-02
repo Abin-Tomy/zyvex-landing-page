@@ -402,6 +402,17 @@ transition:transform .4s ease}
 .logo-set img{width:auto;opacity:.72;flex:none}
 @media(max-width:640px){.logo-set{gap:44px;padding-right:44px}.logo-set img{transform:scale(.85)}.logo-track{animation-duration:30s}}
 @media(prefers-reduced-motion:reduce){.logo-track{animation:none}}
+.diff{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.diff-card{border:1px solid var(--line);border-radius:16px;padding:24px 22px;background:#fff;transition:transform .2s,border-color .2s,box-shadow .2s}
+.diff-card:hover{transform:translateY(-3px);border-color:rgba(6,122,100,.35);box-shadow:0 12px 28px rgba(3,73,61,.08)}
+.diff-ic{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+background:rgba(10,154,127,.08);border:1px solid rgba(6,122,100,.22);color:var(--teal2)}
+.diff-ic svg{width:22px;height:22px}
+.diff-card h3{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:700;line-height:1.25;margin-top:16px;color:var(--ink)}
+.diff-card p{color:var(--muted);font-size:14.5px;line-height:1.5;margin-top:6px}
+@media(max-width:900px){.diff{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.diff{gap:10px;margin-top:28px}.diff-card{padding:16px 14px;border-radius:14px}
+.diff-ic{width:36px;height:36px}.diff-ic svg{width:18px;height:18px}.diff-card h3{font-size:14.5px;margin-top:12px}.diff-card p{font-size:13px;line-height:1.45}}
 .client-marquee{margin-top:30px;display:grid;gap:20px}
 .client-row{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
 .client-marquee .logo-track.rev{animation-direction:reverse}
@@ -807,49 +818,13 @@ system nobody maintains quietly stops working.
 <span class="kicker">Why Brands Choose Us</span>
 <h2 class="h2 balance" style="margin-top:18px">What is different here<span class="dot">.</span></h2>
 </div>
-<div class="grid-3" style="margin-top:48px">
-<div>
-<h3 class="h3">One team, not four vendors</h3>
-<p class="card-body">
-The media buyer, the SEO and the person fixing your checkout are the same team. No
-handoffs to lose money in, and nobody able to blame the channel next door.
-</p>
-</div>
-<div>
-<h3 class="h3">We tell you what to skip</h3>
-<p class="card-body">
-The consultation comes before the recommendation. If the honest answer is a better
-product page rather than a full retainer, that is the answer you get.
-</p>
-</div>
-<div>
-<h3 class="h3">Everything stays yours</h3>
-<p class="card-body">
-Ad account, store, email list, WhatsApp platform. All on your own logins. Leaving
-should cost you nothing but notice.
-</p>
-</div>
-<div>
-<h3 class="h3">Official Shopify Partner</h3>
-<p class="card-body">
-We build the stores as well as market them, so a conversion fix does not wait on a
-developer who was never in the conversation.
-</p>
-</div>
-<div>
-<h3 class="h3">Month to month</h3>
-<p class="card-body">
-No lock-in. The work compounds, so most engagements get more valuable the longer
-they run, but that should be your reason to stay rather than a contract.
-</p>
-</div>
-<div>
-<h3 class="h3">Remote by design</h3>
-<p class="card-body">
-We work with brands across the Gulf, the UK and Europe as well as closer to home.
-Location has never been the constraint. Scope and communication are.
-</p>
-</div>
+<div class="diff">
+<div class="diff-card"><span class="diff-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c.6-3.3 3-5.2 6-5.2s5.4 1.9 6 5.2"/><circle cx="17" cy="9" r="2.4"/><path d="M15.8 14.4c2.4.2 4.3 1.8 4.9 4.6"/></svg></span><h3>One team, not four vendors</h3><p>Ads, SEO, retention and your store, run by one team.</p></div>
+<div class="diff-card"><span class="diff-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5.9 1.1.9 1.8V16h5.4v-.4c0-.7.3-1.3.9-1.8A6 6 0 0 0 12 3z"/></svg></span><h3>Honest advice first</h3><p>If a better product page beats a retainer, we&rsquo;ll say so.</p></div>
+<div class="diff-card"><span class="diff-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.4"/></svg></span><h3>Everything stays yours</h3><p>Ad accounts, store and customer data, all on your logins.</p></div>
+<div class="diff-card"><span class="diff-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/><path d="m9.5 14 1.8 1.8 3.4-3.6"/></svg></span><h3>Official Shopify Partner</h3><p>We build the store too, so fixes ship without waiting.</p></div>
+<div class="diff-card"><span class="diff-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><path d="M9 15h6M13 13l2 2-2 2"/></svg></span><h3>Month to month</h3><p>No lock-in. Stay because it works, not because of a contract.</p></div>
+<div class="diff-card"><span class="diff-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.3 2.4 3.4 5.2 3.4 8.5S14.3 18.1 12 20.5M12 3.5C9.7 5.9 8.6 8.7 8.6 12s1.1 6.1 3.4 8.5"/></svg></span><h3>Clients worldwide</h3><p>Brands across the UK, the Gulf, the US and India.</p></div>
 </div>
 </div>
 </section>
