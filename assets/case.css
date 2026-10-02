@@ -1,0 +1,4 @@
+/* Case study pages: headings and stat values in Helvetica instead of Runalto. */
+.h1,.h2,.h3,.case-name,.wcard-title,.metric-v,.quote-mark{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.h1{letter-spacing:-0.03em}
+.h2,.h3{letter-spacing:-0.02em}
