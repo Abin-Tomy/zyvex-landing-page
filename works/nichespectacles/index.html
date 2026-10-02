@@ -17,7 +17,7 @@
 <link rel="preload" href="/assets/runalto.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/assets/app.css">
 <link rel="stylesheet" href="/assets/light.css">
-<link rel="stylesheet" href="/assets/case.css">
+<link rel="stylesheet" href="/assets/case.css?v=4">
 </head>
 <body>
 
@@ -63,7 +63,7 @@
         <p class="step-n">02</p>
         <h2 class="h2" style="margin-top:12px;font-size:clamp(25px,3.2vw,34px)">Mobile Optimised</h2>
         <p class="card-body" style="font-size:16px;max-width:70ch">Most eyewear browsing happens on a phone, so the store was designed to look great on mobile first: a full-screen hero, swipeable collection cards for Contemporary, Vintage and Sunglasses, fast product search, and a thumb-friendly bottom navigation bar for home, search, collections and cart.</p>
-        <div class="pcar"><div class="pcar-track" tabindex="0" aria-label="Mobile screenshots, scroll sideways"><img src="/assets/work/nichespectacles-mobile-home.jpg" alt="Niche Spectacles mobile homepage" loading="lazy"><img src="/assets/work/nichespectacles-mobile-collections.jpg" alt="Niche Spectacles mobile search with collection cards" loading="lazy"><img src="/assets/work/nichespectacles-mobile-light.jpg" alt="Niche Spectacles mobile catalog page" loading="lazy"><img src="/assets/work/nichespectacles-mobile-dark.jpg" alt="Niche Spectacles mobile catalog page in dark mode" loading="lazy"><img src="/assets/work/nichespectacles-mobile-product.jpg" alt="Niche Spectacles mobile product page" loading="lazy"><img src="/assets/work/nichespectacles-mobile-cart.jpg" alt="Niche Spectacles mobile cart" loading="lazy"></div><div class="pcar-nav"><button class="pcar-btn" type="button" data-dir="-1" aria-label="Previous screenshot">&#8592;</button><button class="pcar-btn" type="button" data-dir="1" aria-label="Next screenshot">&#8594;</button></div></div>
+        <div class="pcar"><div class="pcar-track" tabindex="0" aria-label="Mobile screenshots, scroll sideways"><img src="/assets/work/nichespectacles-mobile-home.jpg" alt="Niche Spectacles mobile homepage" loading="lazy"><img src="/assets/work/nichespectacles-mobile-collections.jpg" alt="Niche Spectacles mobile search with collection cards" loading="lazy"><img src="/assets/work/nichespectacles-mobile-light.jpg" alt="Niche Spectacles mobile catalog page" loading="lazy"><img src="/assets/work/nichespectacles-mobile-dark.jpg" alt="Niche Spectacles mobile catalog page in dark mode" loading="lazy"><img src="/assets/work/nichespectacles-mobile-product.jpg" alt="Niche Spectacles mobile product page" loading="lazy"><img src="/assets/work/nichespectacles-mobile-cart.jpg" alt="Niche Spectacles mobile cart" loading="lazy"></div><div class="pcar-nav"><button class="pcar-btn" type="button" data-dir="-1" aria-label="Previous screenshot">&#8592;</button><div class="pcar-dots"></div><button class="pcar-btn" type="button" data-dir="1" aria-label="Next screenshot">&#8594;</button></div></div>
       </div>
       <div class="wblock">
         <p class="step-n">03</p>
@@ -119,11 +119,17 @@
 <script src="/assets/app.js"></script>
 <script>
 document.querySelectorAll('.pcar').forEach(function(c){
-  var t=c.querySelector('.pcar-track'),b=c.querySelectorAll('.pcar-btn');
-  function step(){var i=t.querySelector('img');return i?i.getBoundingClientRect().width+16:300}
-  function upd(){b[0].disabled=t.scrollLeft<=2;b[1].disabled=t.scrollLeft+t.clientWidth>=t.scrollWidth-2}
+  var t=c.querySelector('.pcar-track'),imgs=t.querySelectorAll('img'),b=c.querySelectorAll('.pcar-btn'),d=c.querySelector('.pcar-dots'),dots=[];
+  function step(){return imgs[0].getBoundingClientRect().width+16}
+  function cur(){return Math.round(t.scrollLeft/step())}
+  function last(){return t.scrollLeft+t.clientWidth>=t.scrollWidth-2}
+  imgs.forEach(function(_,i){var x=document.createElement('button');x.type='button';x.className='pcar-dot';x.setAttribute('aria-label','Screenshot '+(i+1));
+    x.addEventListener('click',function(){t.scrollTo({left:i*step()})});d.appendChild(x);dots.push(x)});
+  function upd(){var i=last()?imgs.length-1:cur();dots.forEach(function(x,k){x.classList.toggle('on',k===i)});
+    b[0].disabled=t.scrollLeft<=2;b[1].disabled=last()}
   b.forEach(function(x){x.addEventListener('click',function(){t.scrollBy({left:step()*+x.dataset.dir})})});
-  t.addEventListener('scroll',upd,{passive:true});t.querySelectorAll('img').forEach(function(i){i.addEventListener('load',upd)});window.addEventListener('resize',upd);upd();
+  t.addEventListener('scroll',upd,{passive:true});imgs.forEach(function(i){i.addEventListener('load',upd)});
+  window.addEventListener('resize',upd);upd();
 });
 </script>
 </body>

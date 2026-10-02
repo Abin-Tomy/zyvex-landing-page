@@ -11,9 +11,13 @@ font-size:15px;font-weight:600;letter-spacing:.22em;text-transform:uppercase}
 /* Side-scrolling carousel of phone screenshots. */
 .pcar{margin-top:28px}
 .pcar-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;
--webkit-overflow-scrolling:touch;padding-bottom:12px;scrollbar-width:thin}
+-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.pcar-track::-webkit-scrollbar{display:none}
 .pcar-track img{flex:0 0 280px;width:280px;scroll-snap-align:start;border:1px solid var(--line);border-radius:26px;display:block}
-.pcar-nav{display:flex;gap:10px;justify-content:flex-end;margin-top:10px}
+.pcar-nav{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:18px}
+.pcar-dots{display:flex;gap:7px;margin:0 8px}
+.pcar-dot{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:var(--line);cursor:pointer}
+.pcar-dot.on{background:var(--teal2);width:22px;border-radius:4px}
 .pcar-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:transparent;color:inherit;
 font-size:18px;line-height:1;cursor:pointer}
 .pcar-btn:hover{border-color:var(--teal2);color:var(--teal2)}
