@@ -167,6 +167,14 @@ html{scroll-behavior:auto}}
 padding:9px 20px;font-size:11px;font-weight:700;letter-spacing:.16em;
 text-transform:uppercase;color:var(--muted)}
 .btn-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:38px}
+.hero-trust{list-style:none;margin:30px auto 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 12px;max-width:760px}
+.hero-trust li{display:inline-flex;align-items:center;gap:8px;padding:7px 14px 7px 8px;border:1px solid var(--line);border-radius:999px;background:#fff;
+font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;font-weight:500;color:var(--ink);white-space:nowrap}
+.hero-trust .ht-i{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:rgba(10,154,127,.09);color:var(--teal2)}
+.hero-trust .ht-i svg{width:15px;height:15px}
+.hero-trust .ht-i img{height:15px!important;width:auto}
+@media(max-width:640px){.hero-trust{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:24px;justify-items:stretch;text-align:center}
+.hero-trust li{justify-content:center;font-size:12px;padding:6px 10px 6px 6px;gap:7px}.hero-trust .ht-i{width:24px;height:24px}}
 .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;
 padding:16px 34px;font-size:12.5px;font-weight:700;letter-spacing:.11em;
 text-transform:uppercase;border:1px solid var(--line);
@@ -548,14 +556,8 @@ run it.
 <a class="btn" href="#testimonials">View testimonials</a>
 <a class="btn" href="#work">View portfolio</a>
 </div>
+<ul class="hero-trust" aria-label="How we work"><li><span class="ht-i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg></span>Audit first</li><li><span class="ht-i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c.6-3.3 3-5.2 6-5.2s5.4 1.9 6 5.2"/><circle cx="17" cy="9" r="2.4"/><path d="M15.8 14.4c2.4.2 4.3 1.8 4.9 4.6"/></svg></span>One team</li><li><span class="ht-i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>Clear reporting</li><li><span class="ht-i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10.2A4.3 4.3 0 0 1 12 8a4.3 4.3 0 0 1 7 2.8C19 16.6 12 21 12 21z"/></svg></span>Ongoing support</li></ul>
 </div>
-</section>
-<!-- ── 2. credibility strip ──────────────────────────── -->
-<section class="strip">
-<div><p class="strip-n">01</p><p class="strip-t">Audit first</p></div>
-<div><p class="strip-n">02</p><p class="strip-t">One team</p></div>
-<div><p class="strip-n">03</p><p class="strip-t">Clear reporting</p></div>
-<div><p class="strip-n">04</p><p class="strip-t">Ongoing support</p></div>
 </section>
 <!-- ── clients ───────────────────────────────────────── -->
 <section class="section rv clients-sec" style="padding:56px 0">
