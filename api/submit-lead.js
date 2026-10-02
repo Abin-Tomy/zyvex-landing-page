@@ -172,7 +172,7 @@ async function createZohoLead(payload, req) {
   // Description contains user message and undedicated attribution fields (no duplicate dedicated fields)
   const descParts = [];
   if (message && String(message).trim()) {
-    descParts.push('Message: ' + String(message).trim());
+    descParts.push(String(message).trim());
   }
   if (attribution.utm_campaign && String(attribution.utm_campaign).trim()) {
     descParts.push('UTM Campaign: ' + String(attribution.utm_campaign).trim());
