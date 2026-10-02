@@ -462,6 +462,16 @@ border:1px solid rgba(18,214,176,.35);border-radius:50%;color:var(--glow);backgr
 .logo-set img{width:auto;opacity:.72;flex:none}
 @media(max-width:640px){.logo-set{gap:44px;padding-right:44px}.logo-set img{transform:scale(.85)}.logo-track{animation-duration:30s}}
 @media(prefers-reduced-motion:reduce){.logo-track{animation:none}}
+.mf{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:56px;align-items:center;max-width:1020px;margin:0 auto}
+.mf-photo{border-radius:20px;overflow:hidden;border:1px solid var(--line);aspect-ratio:4/5;background:#f2f4f3}
+.mf-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.mf-role{margin-top:8px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.mf-text{margin-top:20px;font-size:16.5px;line-height:1.7;color:var(--muted);max-width:52ch}
+.mf-points{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px}
+.mf-points li{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--ink)}
+.mf-points li span{flex:none;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--teal2);background:rgba(10,154,127,.1)}
+@media(max-width:900px){.mf{grid-template-columns:1fr;gap:28px;max-width:520px}}
+@media(max-width:640px){.mf-photo{border-radius:16px}.mf-text{font-size:15.5px}.mf-points li{font-size:14.5px}}
 .tcards{margin-top:44px}
 .tcards-track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start;max-width:1080px;margin:0 auto}
 .tcard{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 22px 18px;display:flex;flex-direction:column;
@@ -882,6 +892,25 @@ t.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize'
 <section class="section-cta">
 <div class="wrap center">
 <p class="crosslink">Need performance marketing instead? <a href="/" target="_blank" rel="noopener">Full-stack growth &#8599;</a></p>
+</div>
+</section>
+<!-- ── meet the founder ──────────────────────────────── -->
+<section class="section rv" id="founder">
+<div class="wrap">
+<div class="mf">
+<div class="mf-photo"><img src="/assets/founder-syed-fidel-shaan.jpg" alt="Syed Fidel Shaan, founder of Zyvex Tech" width="960" height="1200" loading="lazy"></div>
+<div class="mf-body">
+<span class="kicker">Meet the Founder</span>
+<h2 class="h2" style="margin-top:14px">Syed Fidel Shaan<span class="dot">.</span></h2>
+<p class="mf-role">Founder &amp; CEO, Zyvex Tech</p>
+<p class="mf-text">Fidel focuses on two things: building Shopify stores that convert, and running the performance marketing that grows them. He works with every client directly, from the first call to launch and the campaigns that follow. No account managers, no handoffs.</p>
+<ul class="mf-points">
+<li><span aria-hidden="true">&#10003;</span>Shopify builds &amp; conversion optimisation</li>
+<li><span aria-hidden="true">&#10003;</span>Shopify performance marketing</li>
+<li><span aria-hidden="true">&#10003;</span>A direct line to the founder, start to finish</li>
+</ul>
+</div>
+</div>
 </div>
 </section>
 <!-- ── faq ───────────────────────────────────────────── -->

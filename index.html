@@ -277,6 +277,8 @@ text-transform:uppercase;margin-top:18px}
 background:rgba(244,242,236,.015);overflow:hidden}
 .founder-video video{width:100%;height:100%;object-fit:cover;display:block}
 .founder-video video:not([src]){display:none}
+.video-empty img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.founder-video{border-radius:18px}
 .video-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
 justify-content:center;gap:18px;color:var(--faint);font-size:12.5px;line-height:1.5;
 letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:24px}
@@ -580,10 +582,7 @@ var o=new IntersectionObserver(function(e){if(e[0].isIntersecting){o.disconnect(
 <div class="founder">
 <div class="founder-video">
 <video id="founder-video" playsinline controls preload="none"></video>
-<div class="video-empty" id="video-empty">
-<span class="video-play" aria-hidden="true"></span>
-<p>Founder video<br>to be added</p>
-</div>
+<div class="video-empty" id="video-empty"><img src="/assets/founder-syed-fidel-shaan.jpg" alt="Syed Fidel Shaan, founder of Zyvex Tech" width="960" height="1200" loading="lazy"></div>
 </div>
 <div>
 <p class="founder-quote balance">
