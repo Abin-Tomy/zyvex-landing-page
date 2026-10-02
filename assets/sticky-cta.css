@@ -47,10 +47,16 @@ bottom:12px;bottom:calc(12px + constant(safe-area-inset-bottom));bottom:calc(12p
 width:240px;width:62vw;max-width:240px;min-width:190px;height:48px;padding:0 16px;border-radius:14px}
 body{padding-bottom:72px;padding-bottom:calc(72px + constant(safe-area-inset-bottom));padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 }
-/* first section runs on below the floating button so it sits inside the hero's lined background */
-@media(max-width:768px){.hero{padding-bottom:96px;
+/* first section fills the screen on phones so the floating button sits inside its lined
+   background; spare height is split 1:4 (small gap under the header, more above the button) */
+@media(max-width:768px){
+.hero{padding-top:14px;padding-bottom:88px;padding-bottom:calc(88px + env(safe-area-inset-bottom));
 min-height:calc(100vh - var(--hdr,100px));min-height:calc(100svh - var(--hdr,100px));box-sizing:border-box;
-display:flex;flex-direction:column;justify-content:center}.hero > .wrap{width:100%}}
+display:flex;flex-direction:column}
+.hero::before{content:"";flex:1 1 0;order:0}
+.hero > .wrap{width:100%;order:1}
+.hero::after{content:"";flex:4 1 0;order:2}
+}
 /* hero buttons stay side by side on phones */
 @media(max-width:640px){.hero .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:420px;margin-left:auto;margin-right:auto}
 .hero .btn-row .btn{padding:15px 8px;font-size:11px;letter-spacing:.09em;white-space:nowrap;min-width:0}}
