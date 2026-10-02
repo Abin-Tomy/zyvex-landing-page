@@ -534,7 +534,10 @@ body.modal-open{overflow:hidden}
 .contact-modal .field label{font-size:10.5px;margin-bottom:6px}
 .contact-modal .field input,.contact-modal .field select,.contact-modal .field textarea{padding:10px 13px;font-size:15px}
 .contact-modal .field select,.contact-modal .phone-wrap select{background-position:calc(100% - 18px) 50%,calc(100% - 12px) 50%}
-.contact-modal .field textarea{min-height:70px}
+.contact-modal .field input,.contact-modal .field select{height:44px;line-height:1.3;-webkit-appearance:none;appearance:none;border-radius:0;text-indent:0}
+.contact-modal .field input::placeholder{line-height:normal}
+.contact-modal .field textarea{min-height:92px;line-height:1.45}
+.contact-modal .field input::placeholder,.contact-modal .field textarea::placeholder{font-size:14px}
 .contact-modal .field-hint{margin-top:6px;font-size:12px}
 .contact-modal .field .err{margin-top:5px;font-size:12px}
 .contact-modal .submit{padding:13px;margin-top:4px}
@@ -548,6 +551,8 @@ body.modal-open{overflow:hidden}
 .contact-modal .field-row{gap:10px}
 .contact-modal .field input,.contact-modal .field select,.contact-modal .field textarea{padding:9px 12px;font-size:16px} /* 16px stops iOS zooming in */
 .contact-modal .modal-close{top:10px;right:10px;width:34px;height:34px}
+.contact-modal .field input::placeholder,.contact-modal .field textarea::placeholder{font-size:13.5px}
+.contact-modal .field textarea{min-height:104px}
 }
 @media(prefers-reduced-motion:reduce){.contact-modal,.contact-modal > .wrap{transition:none}}
 /* phone country code + budget hint */
