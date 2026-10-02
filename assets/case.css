@@ -2,3 +2,9 @@
 .h1,.h2,.h3,.case-name,.wcard-title,.metric-v,.quote-mark{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 .h1{letter-spacing:-0.03em}
 .h2,.h3{letter-spacing:-0.02em}
+/* Phone screenshots shown side by side, and brand name tiles. */
+.wshots.phones{grid-template-columns:repeat(auto-fit,minmax(200px,300px));justify-content:center}
+.wshots.phones img{border-radius:26px}
+.brands{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.brands span{border:1px solid var(--line);padding:22px 12px;min-height:88px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+font-size:15px;font-weight:600;letter-spacing:.22em;text-transform:uppercase}
