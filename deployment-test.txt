@@ -1,3 +1,0 @@
-GitHub to Vercel connection test 
-"vercel-git-reconnect-test" 
-claude-vercel-deployment-test
