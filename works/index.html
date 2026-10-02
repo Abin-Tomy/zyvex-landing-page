@@ -365,6 +365,44 @@ border-bottom:1px solid var(--line);padding-bottom:2px;transition:color .18s,bor
 }
 .wcard-media{aspect-ratio:1200/630!important;height:auto!important}
 .wcard-media img{width:100%;height:100%;object-fit:cover;object-position:center}
+.tcards{margin-top:44px}
+.tcards-track{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+.tcard{position:relative;background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 26px 22px;display:flex;flex-direction:column;
+box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 14px 34px rgba(3,73,61,.06);transition:transform .2s,box-shadow .2s,border-color .2s}
+.tcard:hover{transform:translateY(-3px);border-color:rgba(6,122,100,.3);box-shadow:0 20px 44px rgba(3,73,61,.10)}
+.tcard::before{content:"";position:absolute;left:26px;right:26px;top:0;height:3px;border-radius:0 0 3px 3px;background:linear-gradient(90deg,#067a64,#2fd1ad)}
+.tcard-top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
+.tcard-logo{width:auto;max-height:40px;max-width:120px;object-fit:contain}
+.tcard-tag{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--teal2);background:rgba(10,154,127,.09);border:1px solid rgba(6,122,100,.2);
+border-radius:999px;padding:6px 11px;white-space:nowrap}
+.tcard-q{width:26px;height:20px;fill:rgba(6,122,100,.22);margin-top:22px}
+.tcard-head{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:19px;font-weight:700;line-height:1.35;color:var(--ink);margin-top:12px;letter-spacing:-.005em}
+.tcard-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+.tcard-more > p{overflow:hidden;font-size:14.5px;line-height:1.65;color:var(--muted)}
+.tcard.open .tcard-more{grid-template-rows:1fr}
+.tcard.open .tcard-more > p{padding-top:12px}
+.tcard-toggle{align-self:flex-start;margin-top:12px;background:none;border:0;padding:0;cursor:pointer;font-size:12.5px;font-weight:700;letter-spacing:.04em;color:var(--teal2);border-bottom:1px solid rgba(6,122,100,.35)}
+.tcard-by{display:flex;align-items:center;gap:12px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.tcard-av{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;letter-spacing:.04em;
+color:#fff;background:linear-gradient(135deg,#067a64,#0a9a7f)}
+.tcard-by b{display:block;font-size:14.5px;font-weight:700;color:var(--ink)}
+.tcard-by div span{display:block;font-size:12.5px;color:var(--faint);margin-top:2px}
+.tcard-link{margin-left:auto;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);white-space:nowrap}
+.tcard-link:hover{color:var(--ink);border-color:var(--ink)}
+.tcards-dots{display:none}
+@media(max-width:900px){
+.tcards{margin-top:30px}
+.tcards-track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;
+scrollbar-width:none;margin:0 -16px;padding:4px 16px 18px;scroll-padding:0 16px}
+.tcards-track::-webkit-scrollbar{display:none}
+.tcard{flex:0 0 86%;scroll-snap-align:start;padding:22px 20px 18px}
+.tcard:hover{transform:none}
+.tcard-head{font-size:17.5px}
+.tcards-dots{display:flex;justify-content:center;gap:7px;margin-top:4px}
+.tcards-dots button{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:var(--line);cursor:pointer}
+.tcards-dots button.on{width:22px;border-radius:4px;background:var(--teal2)}
+}
+@media(prefers-reduced-motion:reduce){.tcard-more{transition:none}}
 </style>
 <link rel="stylesheet" href="/assets/light.css">
 <link rel="stylesheet" href="/assets/sticky-cta.css?v=7">
@@ -535,6 +573,58 @@ The stores, funnels and campaigns behind the numbers, and what we actually did o
 </div>
 </div>
 </section>
+<section class="section">
+<div class="wrap">
+<div class="center">
+<span class="kicker">Testimonials</span>
+<h2 class="h2 balance" style="margin-top:18px">What clients say<span class="dot">.</span></h2>
+<p class="lede balance" style="max-width:560px;margin-left:auto;margin-right:auto">
+In their words, not ours.
+</p>
+</div>
+<div class="tcards">
+<div class="tcards-track">
+<article class="tcard">
+<div class="tcard-top"><img class="tcard-logo" src="/assets/clients/x-emirates.png" alt="X Emirates Online" width="110" height="37" loading="lazy"><span class="tcard-tag">&#8377;50K &rarr; &#8377;6.45L in a month</span></div>
+<svg class="tcard-q" viewBox="0 0 32 24" aria-hidden="true"><path d="M0 24V14C0 6.3 4.2 1.6 12.6 0l1.3 3.2C9.6 4.6 7.4 7.3 7.2 11.2H13V24H0zm18.6 0V14c0-7.7 4.2-12.4 12.6-14l1.3 3.2c-4.3 1.4-6.5 4.1-6.7 8H31.6V24H18.6z"/></svg>
+<p class="tcard-head">Within just one month, total sales went from &#8377;50K to &#8377;6.45 lakhs.</p>
+<div class="tcard-more" id="tm0"><p>I was completely unsure what to do with my business. I had worked with two digital marketing companies before, and all I got was a loss, not a single rupee of profit. Then I met Zyvex Tech, and the work they did on my website changed that. I&rsquo;m thankful to Mr. Syed Fidel Shaan and his team for their dedication and hard work for my company. I recommend them to everyone: this is a company you can trust.</p></div>
+<button class="tcard-toggle" type="button" aria-expanded="false" aria-controls="tm0">Read full review</button>
+<div class="tcard-by"><span class="tcard-av" aria-hidden="true">NK</span><div><b>Navneeth Krishna</b><span>CEO, X Emirates Online</span></div><a class="tcard-link" href="/works/x-emirates/" target="_blank" rel="noopener">Case study &#8599;</a></div>
+</article>
+<article class="tcard">
+<div class="tcard-top"><img class="tcard-logo" src="/assets/clients/firoz-pickles.png" alt="Firoz Pickles" width="56" height="44" loading="lazy"><span class="tcard-tag">Website + ongoing SEO</span></div>
+<svg class="tcard-q" viewBox="0 0 32 24" aria-hidden="true"><path d="M0 24V14C0 6.3 4.2 1.6 12.6 0l1.3 3.2C9.6 4.6 7.4 7.3 7.2 11.2H13V24H0zm18.6 0V14c0-7.7 4.2-12.4 12.6-14l1.3 3.2c-4.3 1.4-6.5 4.1-6.7 8H31.6V24H18.6z"/></svg>
+<p class="tcard-head">They delivered our website exactly the way we wanted.</p>
+<div class="tcard-more" id="tm1"><p>Working with Zyvex Tech has been a great experience for Firoz Pickles. They understood our business and requirements from the beginning. Their attention to detail and understanding of our brand made the entire process smooth and professional. They are also handling our ongoing SEO, and we&rsquo;re happy with the way they approach the work and keep improving our online presence. I would definitely recommend Zyvex Tech to anyone looking for a reliable team for website development and digital marketing.</p></div>
+<button class="tcard-toggle" type="button" aria-expanded="false" aria-controls="tm1">Read full review</button>
+<div class="tcard-by"><span class="tcard-av" aria-hidden="true">MV</span><div><b>Muhammed Vasith</b><span>CEO, Firoz Pickles</span></div><a class="tcard-link" href="/works/firoz-pickles/" target="_blank" rel="noopener">Case study &#8599;</a></div>
+</article>
+<article class="tcard">
+<div class="tcard-top"><img class="tcard-logo" src="/assets/clients/feza-dates.png" alt="Feza Dates" width="36" height="44" loading="lazy"><span class="tcard-tag">Premium custom build</span></div>
+<svg class="tcard-q" viewBox="0 0 32 24" aria-hidden="true"><path d="M0 24V14C0 6.3 4.2 1.6 12.6 0l1.3 3.2C9.6 4.6 7.4 7.3 7.2 11.2H13V24H0zm18.6 0V14c0-7.7 4.2-12.4 12.6-14l1.3 3.2c-4.3 1.4-6.5 4.1-6.7 8H31.6V24H18.6z"/></svg>
+<p class="tcard-head">A premium, luxurious look that felt completely custom.</p>
+<div class="tcard-more" id="tm2"><p>I wanted the Feza Dates website to have a premium, luxurious look that didn&rsquo;t look like a typical template or theme. The team understood our vision perfectly and created a website that matches our brand identity beautifully. They also paid special attention to the gifting experience, making the overall website feel premium and seamless. Really happy with the final result and their attention to detail.</p></div>
+<button class="tcard-toggle" type="button" aria-expanded="false" aria-controls="tm2">Read full review</button>
+<div class="tcard-by"><span class="tcard-av" aria-hidden="true">FM</span><div><b>Faaz Mohammed</b><span>CEO, Feza Dates</span></div><a class="tcard-link" href="/works/feza-dates/" target="_blank" rel="noopener">Case study &#8599;</a></div>
+</article>
+</div>
+<div class="tcards-dots" aria-hidden="true"></div>
+</div>
+</div>
+</section>
+<script>
+/* testimonials: read-more toggles + swipe dots on phones */
+(function(){var w=document.querySelector('.tcards');if(!w)return;
+w.querySelectorAll('.tcard-toggle').forEach(function(b){b.addEventListener('click',function(){var c=b.closest('.tcard'),o=c.classList.toggle('open');
+ b.setAttribute('aria-expanded',o);b.textContent=o?'Show less':'Read full review'})});
+var t=w.querySelector('.tcards-track'),cards=t.querySelectorAll('.tcard'),d=w.querySelector('.tcards-dots'),dots=[];
+cards.forEach(function(c,i){var x=document.createElement('button');x.type='button';x.setAttribute('aria-label','Review '+(i+1));
+ x.addEventListener('click',function(){t.scrollTo({left:c.offsetLeft-t.offsetLeft-16})});d.appendChild(x);dots.push(x)});
+function upd(){var i=0,best=1e9;cards.forEach(function(c,k){var dist=Math.abs(c.getBoundingClientRect().left-t.getBoundingClientRect().left-16);if(dist<best){best=dist;i=k}});
+ dots.forEach(function(x,k){x.classList.toggle('on',k===i)})}
+t.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);upd()})();
+</script>
 <section class="section section-b">
 <div class="wrap center">
 <span class="pill">Next</span>
