@@ -134,6 +134,13 @@ const LEAD_TYPE_MAP = {
   shopify:             'Shopify Builds',
 };
 
+const BUDGET_MAP = {
+  '25k-50k': '25K - 50K',
+  '50k-1l': '50K - 1L',
+  '1l-3l': '1L - 3L',
+  '3l-5l': '3L - 5L',
+};
+
 /**
  * Create a Lead record in Zoho CRM (Leads module).
  * Required env vars: ZOHO_REFRESH_TOKEN, ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET.
@@ -150,7 +157,7 @@ async function createZohoLead(payload, req) {
 
   const {
     name, email, phone, business, website,
-    budget, budget_label, message, service,
+    budget, budget_tier, budget_label, message, service,
     timeline,
     attribution = {},
   } = payload;
@@ -199,7 +206,13 @@ async function createZohoLead(payload, req) {
     Lead_Source: 'Meta Ads',
     Lead_Status: 'Not Contacted',
     Lead_Type:   LEAD_TYPE_MAP[service] || undefined,
-    Budget:      budget || budget_label || undefined,
+    Budget:
+      BUDGET_MAP[budget_tier] ||
+      BUDGET_MAP[budget] ||
+      BUDGET_MAP[budget_label] ||
+      budget ||
+      budget_label ||
+      undefined,
     Meta_FBP:    attribution.fbp || undefined,
     Meta_FBCLID: fbclid || undefined,
     Meta_FBC:    fbc || undefined,
