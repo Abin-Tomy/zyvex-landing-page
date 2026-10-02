@@ -189,7 +189,7 @@ async function createZohoLead(payload, req) {
     Last_Name:   lastName,
     First_Name:  firstName || undefined,
     Email:       email     || undefined,
-    Phone:       normalisePhone(phone) || phone || undefined,
+    Mobile:      normalisePhone(phone) || phone || undefined,
     Company:     business  || undefined,
     Website:     website   || undefined,
     Lead_Source: 'Meta Ads',
