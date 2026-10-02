@@ -1,35 +1,61 @@
 /* Contact button pinned to the bottom of every page (replaces the header button).
-   Light mint glass, dark green text, a light running around the border and a
-   soft sheen. The border light is drawn with layered backgrounds (padding-box /
-   border-box), not CSS masks, so it can never spill over the button in Safari.
+   Built to hold up in in-app browsers (Instagram, Facebook, TikTok, Gmail) and older
+   phones: every modern feature has a plain fallback declared first, and the animated
+   border only turns on where conic gradients are supported.
    Phones: compact bar centred above the browser toolbar. Desktop: pill, bottom right. */
-@property --cta-a{syntax:"<angle>";inherits:false;initial-value:0deg}
 .sticky-cta{position:fixed;z-index:900;display:flex;align-items:center;justify-content:center;gap:10px;
-overflow:hidden;isolation:isolate;color:#03594a;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;font-weight:800;letter-spacing:.14em;
-text-transform:uppercase;text-decoration:none;border:2px solid transparent;
+box-sizing:border-box;overflow:hidden;isolation:isolate;white-space:nowrap;
+color:#03594a;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12.5px;line-height:1;font-weight:800;letter-spacing:.14em;
+text-transform:uppercase;text-decoration:none;-webkit-text-size-adjust:100%;text-size-adjust:100%;
+-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;
+/* fallback look: solid mint with a green border */
+background:#e6f5f0;border:2px solid rgba(6,122,100,.45);
+box-shadow:inset 0 1px 0 rgba(255,255,255,.9);
+-webkit-transition:color .18s,-webkit-transform .18s;transition:color .18s,transform .18s}
+.sticky-cta svg{width:16px;height:16px;flex:0 0 16px}
+.sticky-cta:focus-visible{outline:2px solid #067a64;outline-offset:3px}
+
+/* animated border light, only where supported */
+@property --cta-a{syntax:"<angle>";inherits:false;initial-value:0deg}
+@supports (background:conic-gradient(red,blue)){
+.sticky-cta{border-color:transparent;
 background:
  linear-gradient(120deg,#e1f3ee,#f8fcfb 45%,#d4eee6) padding-box,
- conic-gradient(from var(--cta-a),rgba(6,122,100,.28) 0deg,rgba(6,122,100,.28) 70deg,#067a64 130deg,#2fd1ad 160deg,#ffffff 172deg,rgba(6,122,100,.28) 185deg,
-  rgba(6,122,100,.28) 250deg,#067a64 310deg,#2fd1ad 340deg,#ffffff 352deg,rgba(6,122,100,.28) 360deg) border-box;
-box-shadow:inset 0 1px 0 rgba(255,255,255,.9);
-animation:cta-ring 3.6s linear infinite;transition:color .18s,transform .18s}
+ conic-gradient(from var(--cta-a,0deg),rgba(6,122,100,.3) 0deg,rgba(6,122,100,.3) 70deg,#067a64 130deg,#2fd1ad 160deg,#ffffff 172deg,rgba(6,122,100,.3) 185deg,
+  rgba(6,122,100,.3) 250deg,#067a64 310deg,#2fd1ad 340deg,#ffffff 352deg,rgba(6,122,100,.3) 360deg) border-box;
+animation:cta-ring 3.6s linear infinite}
+}
 @keyframes cta-ring{to{--cta-a:360deg}}
 /* soft light sweeping across the button */
 .sticky-cta::after{content:"";position:absolute;top:0;bottom:0;left:0;width:60%;z-index:-1;pointer-events:none;
-background:linear-gradient(105deg,transparent,rgba(255,255,255,.75) 50%,transparent);
-transform:translateX(-120%);animation:cta-sheen 5s ease-in-out infinite}
-@keyframes cta-sheen{0%,55%{transform:translateX(-120%)}85%,100%{transform:translateX(260%)}}
-.sticky-cta:hover,.sticky-cta:focus-visible{color:#023f35;outline:none}
-.sticky-cta svg{width:16px;height:16px;flex:none}
+background:linear-gradient(105deg,rgba(255,255,255,0),rgba(255,255,255,.75) 50%,rgba(255,255,255,0));
+-webkit-transform:translateX(-120%);transform:translateX(-120%);animation:cta-sheen 5s ease-in-out infinite}
+@keyframes cta-sheen{0%,55%{-webkit-transform:translateX(-120%);transform:translateX(-120%)}85%,100%{-webkit-transform:translateX(260%);transform:translateX(260%)}}
+
+/* desktop */
 @media(min-width:769px){
 .sticky-cta{right:28px;bottom:28px;padding:14px 26px;border-radius:999px}
-.sticky-cta:hover{transform:translateY(-2px)}
 }
+@media(min-width:769px) and (hover:hover){
+.sticky-cta:hover{color:#023f35;-webkit-transform:translateY(-2px);transform:translateY(-2px)}
+}
+
+/* phones and tablets: centred bar above the browser / in-app toolbar */
 @media(max-width:768px){
-.sticky-cta{left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));
-width:min(240px,62vw);height:48px;border-radius:14px}
-body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+.sticky-cta{left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);
+bottom:12px;bottom:calc(12px + constant(safe-area-inset-bottom));bottom:calc(12px + env(safe-area-inset-bottom));
+width:240px;width:62vw;max-width:240px;min-width:190px;height:48px;padding:0 16px;border-radius:14px}
+body{padding-bottom:72px;padding-bottom:calc(72px + constant(safe-area-inset-bottom));padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 }
+/* very narrow phones (320px) */
+@media(max-width:340px){.sticky-cta{font-size:11.5px;letter-spacing:.11em;min-width:176px}}
+/* phones in landscape: shorter bar */
+@media(max-width:932px) and (max-height:480px) and (orientation:landscape){
+.sticky-cta{left:auto;right:16px;right:calc(16px + env(safe-area-inset-right));-webkit-transform:none;transform:none;width:auto;min-width:0;max-width:none;
+height:40px;padding:0 20px;border-radius:999px;bottom:10px;bottom:calc(10px + env(safe-area-inset-bottom))}
+body{padding-bottom:60px}
+}
+
 @media(prefers-reduced-motion:reduce){.sticky-cta,.sticky-cta::after{animation:none}}
-body.modal-open .sticky-cta{opacity:0;pointer-events:none}
+body.modal-open .sticky-cta{opacity:0;pointer-events:none;visibility:hidden}
 @media print{.sticky-cta{display:none}}
