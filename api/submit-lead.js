@@ -193,6 +193,7 @@ async function createZohoLead(payload, req) {
     Company:     business  || undefined,
     Website:     website   || undefined,
     Lead_Source: 'Meta Ads',
+    Lead_Status: 'Not Contacted',
     Lead_Type:   LEAD_TYPE_MAP[service] || undefined,
     Budget:      budget || budget_label || undefined,
     Meta_FBP:    attribution.fbp || undefined,
