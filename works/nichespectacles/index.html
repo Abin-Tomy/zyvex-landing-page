@@ -17,7 +17,7 @@
 <link rel="preload" href="/assets/runalto.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/assets/app.css">
 <link rel="stylesheet" href="/assets/light.css">
-<link rel="stylesheet" href="/assets/case.css?v=4">
+<link rel="stylesheet" href="/assets/case.css?v=5">
 </head>
 <body>
 
@@ -75,7 +75,7 @@
         <p class="step-n">04</p>
         <h2 class="h2" style="margin-top:12px;font-size:clamp(25px,3.2vw,34px)">A Special Dark Mode</h2>
         <p class="card-body" style="font-size:16px;max-width:70ch">The store includes a dark mode that customers switch on with the sun and moon toggle in the header. The whole store, from the header and collections to the product grid, flips to a dark theme. Frames and lenses stand out against the dark background, and it makes evening browsing easier on the eyes, a small detail that makes the store feel premium.</p>
-        <div class="wshots phones"><img src="/assets/work/nichespectacles-mobile-light.jpg" alt="Niche Spectacles collection page in light mode" loading="lazy"><img src="/assets/work/nichespectacles-mobile-dark.jpg" alt="Niche Spectacles collection page in dark mode" loading="lazy"></div>
+        <div class="pcar"><div class="pcar-track" tabindex="0" aria-label="Light and dark mode screenshots, scroll sideways"><img src="/assets/work/nichespectacles-mobile-light.jpg" alt="Niche Spectacles collection page in light mode" loading="lazy"><img src="/assets/work/nichespectacles-mobile-dark.jpg" alt="Niche Spectacles collection page in dark mode" loading="lazy"></div><div class="pcar-nav"><button class="pcar-btn" type="button" data-dir="-1" aria-label="Previous screenshot">&#8592;</button><div class="pcar-dots"></div><button class="pcar-btn" type="button" data-dir="1" aria-label="Next screenshot">&#8594;</button></div></div>
       </div>
       <div class="wblock">
         <p class="step-n">05</p>
@@ -126,7 +126,7 @@ document.querySelectorAll('.pcar').forEach(function(c){
   imgs.forEach(function(_,i){var x=document.createElement('button');x.type='button';x.className='pcar-dot';x.setAttribute('aria-label','Screenshot '+(i+1));
     x.addEventListener('click',function(){t.scrollTo({left:i*step()})});d.appendChild(x);dots.push(x)});
   function upd(){var i=last()?imgs.length-1:cur();dots.forEach(function(x,k){x.classList.toggle('on',k===i)});
-    b[0].disabled=t.scrollLeft<=2;b[1].disabled=last()}
+    b[0].disabled=t.scrollLeft<=2;b[1].disabled=last();c.classList.toggle('fits',t.scrollWidth<=t.clientWidth+2)}
   b.forEach(function(x){x.addEventListener('click',function(){t.scrollBy({left:step()*+x.dataset.dir})})});
   t.addEventListener('scroll',upd,{passive:true});imgs.forEach(function(i){i.addEventListener('load',upd)});
   window.addEventListener('resize',upd);upd();

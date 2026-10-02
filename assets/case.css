@@ -23,3 +23,5 @@ font-size:18px;line-height:1;cursor:pointer}
 .pcar-btn:hover{border-color:var(--teal2);color:var(--teal2)}
 .pcar-btn:disabled{opacity:.35;cursor:default}
 @media(max-width:640px){.pcar-track img{flex-basis:72%;width:72%}}
+.pcar.fits .pcar-nav{display:none}
+.pcar.fits .pcar-track{justify-content:center}
