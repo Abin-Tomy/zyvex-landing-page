@@ -24,6 +24,47 @@ function normalisePhone(raw) {
   return stripped.startsWith('+') ? stripped : '+' + stripped;
 }
 
+/* --- Attribution (browser-supplied, untrusted) ------------------------------ */
+
+const RE_CLICK_ID = /^[\w-]{10,500}$/;
+const RE_FBC      = /^fb\.[0-2]\.\d{13}\.[\w-]{10,500}$/;
+const RE_FBP      = /^fb\.[0-2]\.\d{13}\.\d{5,30}$/;
+
+function cleanText(v) {
+  if (typeof v !== 'string') return '';
+  return v.replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 200);
+}
+
+/**
+ * Validate the attribution object sent by the browser. Malformed values are
+ * dropped (never repaired), so they reach neither Meta nor Zoho, and a bad
+ * value never blocks the lead itself.
+ *
+ * fbc: a valid browser value (Meta's _fbc, or one stamped with the time the
+ * fbclid was first captured) is used as-is. Only when there is none is it
+ * built from a valid fbclid, which is the previous behaviour.
+ */
+function normaliseAttribution(raw) {
+  const a = raw && typeof raw === 'object' ? raw : {};
+  let fbclid = typeof a.fbclid === 'string' && RE_CLICK_ID.test(a.fbclid) ? a.fbclid : '';
+  const browserFbc = typeof a.fbc === 'string' && RE_FBC.test(a.fbc) ? a.fbc : '';
+  // Consistency: never send an fbclid and fbc that describe different clicks.
+  // The selected fbc wins; a mismatched fbclid is discarded (the lead is not blocked).
+  if (browserFbc && fbclid && browserFbc.split('.').slice(3).join('.') !== fbclid) fbclid = '';
+  const fbc =
+    browserFbc ? browserFbc
+    : fbclid ? `fb.1.${Date.now()}.${fbclid}`
+    : '';
+  return {
+    utm_source:   cleanText(a.utm_source),
+    utm_medium:   cleanText(a.utm_medium),
+    utm_campaign: cleanText(a.utm_campaign),
+    fbclid:       fbclid,
+    fbc:          fbc,
+    fbp:          typeof a.fbp === 'string' && RE_FBP.test(a.fbp) ? a.fbp : '',
+  };
+}
+
 /* --- Meta CAPI -------------------------------------------------------------- */
 
 /**
@@ -51,8 +92,7 @@ async function sendMetaCapi(payload, req) {
 
   const userAgent = req.headers['user-agent'] || '';
 
-  const fbclid = attribution.fbclid || '';
-  const fbc    = fbclid ? `fb.1.${Date.now()}.${fbclid}` : undefined;
+  const fbc = attribution.fbc || undefined;
 
   const userData = {
     em: [sha256(payload.email)].filter(Boolean),
@@ -178,7 +218,7 @@ async function createZohoLead(payload, req) {
   const userAgent = payload.user_agent || (req && req.headers && req.headers['user-agent']) || '';
 
   const fbclid = attribution.fbclid || '';
-  const fbc    = attribution.fbc || payload.fbc || (fbclid ? `fb.1.${Date.now()}.${fbclid}` : undefined);
+  const fbc    = attribution.fbc || undefined;
 
   // Description contains user message and undedicated attribution fields (no duplicate dedicated fields)
   const descParts = [];
@@ -277,7 +317,7 @@ module.exports = async function handler(req, res) {
   // Derive service name from the form kind when the frontend does not pass it
   const enrichedPayload = Object.assign({}, body, {
     service:     body.service     || (body.form === 'shopify' ? 'shopify' : 'full_stack_marketing'),
-    attribution: body.attribution || {},
+    attribution: normaliseAttribution(body.attribution),
   });
 
   // Fire both integrations concurrently; a failure in one never blocks the other

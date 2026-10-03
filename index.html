@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script defer src="/assets/attribution.js?v=1"></script>
 <title>Growth Marketing Agency for D2C &amp; Shopify Brands | Zyvex Tech</title>
 <meta name="description" content="Meta Ads, SEO, CRO and retention run as one system for D2C brands. Senior team only, no junior bench, and every account stays in your name.">
 <link rel="canonical" href="https://in.zyvextech.co/">
@@ -1210,12 +1211,16 @@ var tierLabel = form.elements.budget.selectedOptions[0].textContent.trim();
 var value = leadValue(kind, tier);
 var sp = new URLSearchParams(window.location.search);
 var fbpMatch = document.cookie.match(/(?:^|;\s*)_fbp=([^;]+)/);
+/* stored first/latest-touch attribution (assets/attribution.js); {} if unavailable */
+var za = {};
+try { za = (window.zxAttribution && window.zxAttribution()) || {}; } catch (zaErr) { za = {}; }
 var attribution = {
-utm_source:   sp.get('utm_source')   || '',
-utm_medium:   sp.get('utm_medium')   || '',
-utm_campaign: sp.get('utm_campaign') || '',
-fbclid:       sp.get('fbclid')       || '',
-fbp:          fbpMatch ? decodeURIComponent(fbpMatch[1]) : ''
+utm_source:   sp.get('utm_source')   || za.utm_source   || '',
+utm_medium:   sp.get('utm_medium')   || za.utm_medium   || '',
+utm_campaign: sp.get('utm_campaign') || za.utm_campaign || '',
+fbclid:       za.fbclid          || sp.get('fbclid') || '',   /* same click as fbc first; URL as fallback */
+fbp:          (fbpMatch ? decodeURIComponent(fbpMatch[1]) : '') || za.fbp || '',
+fbc:          za.fbc || ''
 };
 var payload = {
 form: kind,
