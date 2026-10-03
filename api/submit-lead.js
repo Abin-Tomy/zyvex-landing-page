@@ -168,6 +168,9 @@ async function getZohoAccessToken() {
   return json.access_token;
 }
 
+/** Max length of Zoho single-line text fields (User_Agent, Client_IP, Meta_*, Timeline). */
+const ZOHO_TEXT_MAX = 255;
+
 /** Maps the frontend `service` value to the Zoho Lead_Type picklist label. */
 const LEAD_TYPE_MAP = {
   full_stack_marketing: 'Full Stack Marketing',
@@ -236,6 +239,30 @@ async function createZohoLead(payload, req) {
   }
   const description = descParts.length > 0 ? descParts.join('\n') : undefined;
 
+  // Zoho single-line text fields hold at most 255 characters; a longer value
+  // makes Zoho reject the whole record. Only the Zoho copy is shortened —
+  // Meta CAPI still receives the full values.
+  const shortened = [];
+  function fitZoho(v, field) {
+    if (v === undefined || v === null || v === '') return undefined;
+    const str = String(v);
+    if (str.length <= ZOHO_TEXT_MAX) return str;
+    let cut = str.slice(0, ZOHO_TEXT_MAX);
+    // never leave half of a surrogate pair at the end
+    if (/[\uD800-\uDBFF]$/.test(cut)) cut = cut.slice(0, -1);
+    shortened.push(field + ' truncated (' + str.length + ')');
+    return cut;
+  }
+  // Click identifiers are never truncated: a partial ID would be misleading,
+  // so an over-long one is left out of Zoho entirely.
+  function wholeOrNone(v, field) {
+    if (v === undefined || v === null || v === '') return undefined;
+    const str = String(v);
+    if (str.length <= ZOHO_TEXT_MAX) return str;
+    shortened.push(field + ' omitted (' + str.length + ')');
+    return undefined;
+  }
+
   const record = {
     Last_Name:   lastName,
     First_Name:  firstName || undefined,
@@ -253,14 +280,17 @@ async function createZohoLead(payload, req) {
       budget ||
       budget_label ||
       undefined,
-    Meta_FBP:    attribution.fbp || undefined,
-    Meta_FBCLID: fbclid || undefined,
-    Meta_FBC:    fbc || undefined,
-    Client_IP:   clientIp || undefined,
-    User_Agent:  userAgent || undefined,
-    Timeline:    timeline || undefined,
+    Meta_FBP:    fitZoho(attribution.fbp, 'Meta_FBP'),
+    Meta_FBCLID: wholeOrNone(fbclid, 'Meta_FBCLID'),
+    Meta_FBC:    wholeOrNone(fbc, 'Meta_FBC'),
+    Client_IP:   fitZoho(clientIp, 'Client_IP'),
+    User_Agent:  fitZoho(userAgent, 'User_Agent'),
+    Timeline:    fitZoho(timeline, 'Timeline'),
     Description: description,
   };
+
+  // Field names and lengths only — never the values themselves
+  if (shortened.length) console.warn('[Zoho] Field length limit:', shortened.join(', '));
 
   // Strip undefined keys so we don't send null values to Zoho
   Object.keys(record).forEach(function(k) {
@@ -280,8 +310,14 @@ async function createZohoLead(payload, req) {
     const text = await res.text();
     console.error('[Zoho] CRM API error:', res.status, text);
   } else {
-    const json = await res.json();
-    console.info('[Zoho] Lead created:', JSON.stringify(json && json.data && json.data[0]));
+    const json = await res.json().catch(function() { return null; });
+    const result = json && json.data && json.data[0];
+    if (!result || result.status !== 'success') {
+      // Zoho can answer 2xx while rejecting the record itself
+      console.error('[Zoho] CRM record rejected:', res.status, JSON.stringify(result || json));
+    } else {
+      console.info('[Zoho] Lead created:', JSON.stringify(result));
+    }
   }
 }
 
