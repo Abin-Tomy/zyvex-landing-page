@@ -132,15 +132,20 @@
       var out = {};
       UTM_KEYS.concat(['gclid']).forEach(function (k) { if (set[k]) out[k] = set[k]; });
 
-      // fbc: most recent usable click among Meta's _fbc cookie, this page's click, stored click
-      // (each must be well-formed and no older than 90 days by its embedded timestamp)
-      var cands = [];
-      var metaFbc = cookie('_fbc');
-      if (usableFbc(metaFbc)) cands.push(metaFbc);             // listed first: wins ties
-      if (currentFbc && usableFbc(currentFbc.fbc)) cands.push(currentFbc.fbc);
-      if (sf && usableFbc(sf.fbc)) cands.push(sf.fbc);
       var fbc = '';
-      cands.forEach(function (c) { if (!fbc || fbcTime(c) > fbcTime(fbc)) fbc = c; });
+      var metaFbc = cookie('_fbc');
+      if (currentFbc && usableFbc(currentFbc.fbc)) {
+        // a valid fbclid in this page's URL is authoritative: Meta's _fbc is used only
+        // when it is the same click; a different cookie or stored click is ignored
+        fbc = (usableFbc(metaFbc) && fbcClickId(metaFbc) === currentFbc.fbclid) ? metaFbc : currentFbc.fbc;
+      } else {
+        // no click in this URL: most recent usable click among Meta's _fbc cookie and the
+        // stored click (each well-formed and no older than 90 days by its embedded timestamp)
+        var cands = [];
+        if (usableFbc(metaFbc)) cands.push(metaFbc);           // listed first: wins ties
+        if (sf && usableFbc(sf.fbc)) cands.push(sf.fbc);
+        cands.forEach(function (c) { if (!fbc || fbcTime(c) > fbcTime(fbc)) fbc = c; });
+      }
       if (fbc) out.fbc = fbc;
 
       // fbclid always matches the chosen fbc, so the two never describe different clicks
