@@ -11,6 +11,11 @@
      zx_fbc  latest Meta click {fbc, fbclid, ts} — fbc built from the time the
              fbclid was FIRST captured, or Meta's own _fbc for that click
 
+   URL carrier: once this page's click is known, ?zx_fbc=<that exact fbc> is added
+   to the address (history.replaceState, nothing else in the URL changes). If the
+   visitor moves to another browser (e.g. Instagram → "Open in external browser"),
+   the carried fbc is restored as-is: same click, same original timestamp.
+
    Nothing is fabricated: no fbclid/fbc/fbp is produced unless it came from
    the URL or Meta's own cookies. Every storage/cookie access is guarded, so
    blocked storage or cookies can never break the page or the lead form.
@@ -82,9 +87,19 @@
     return true;
   }
 
+  /* ── URL carrier: the original fbc preserved across browsers ── */
+  var CARRIER = 'zx_fbc';
+  function readCarrier() {
+    try {
+      var v = new URLSearchParams(w.location.search).get(CARRIER);
+      return usableFbc(v) ? v : '';                            // malformed / older than 90 days → ignored
+    } catch (e) { return ''; }
+  }
+
   /* ── capture on landing ── */
   var current = readUrl();          // this page's attribution, kept in memory even if storage fails
   var currentFbc = null;            // {fbc, fbclid, ts} for a click seen on this page
+  var carried = readCarrier();      // exact original fbc carried in this URL, or ''
 
   (function capture() {
     if (!Object.keys(current).length) return;
@@ -108,6 +123,9 @@
       var stored = load('zx_fbc');
       if (fresh(stored) && stored.fbclid === current.fbclid && usableFbc(stored.fbc)) {
         currentFbc = stored;                                   // same click seen again: keep original
+      } else if (carried && fbcClickId(carried) === current.fbclid) {
+        currentFbc = { fbc: carried, fbclid: current.fbclid, ts: fbcTime(carried) };  // carried original
+        save('zx_fbc', currentFbc);
       } else {
         var metaFbc = cookie('_fbc');
         var fbc = (usableFbc(metaFbc) && fbcClickId(metaFbc) === current.fbclid)
@@ -117,6 +135,31 @@
         save('zx_fbc', currentFbc);
       }
     }
+  })();
+
+  // no click in this URL, but a carried one (e.g. a new external browser):
+  // restore that exact fbc — no new timestamp, no rebuilt value
+  (function restoreCarried() {
+    if (currentFbc || !carried) return;
+    currentFbc = { fbc: carried, fbclid: fbcClickId(carried), ts: fbcTime(carried) };
+    save('zx_fbc', currentFbc);
+  })();
+
+  // put this page's original fbc in the URL so it survives a move to another browser;
+  // skipped when the URL already carries exactly that value (no rewrite loop)
+  (function writeCarrier() {
+    if (!currentFbc || !usableFbc(currentFbc.fbc)) return;
+    try {
+      var loc = w.location, h = w.history;
+      if (!h || !h.replaceState) return;
+      var have = new URLSearchParams(loc.search).getAll(CARRIER);
+      if (have.length === 1 && have[0] === currentFbc.fbc) return;
+      var kept = String(loc.search || '').replace(/^\?/, '').split('&').filter(function (p) {
+        return p && p.split('=')[0] !== CARRIER;               // every other parameter kept byte-for-byte
+      });
+      kept.push(CARRIER + '=' + currentFbc.fbc);               // fbc is [\w.-] only: no encoding needed
+      h.replaceState(h.state, '', loc.pathname + '?' + kept.join('&') + loc.hash);
+    } catch (e) { /* history unavailable: attribution still works in this browser */ }
   })();
 
   /* ── merged view for the lead form ── */
